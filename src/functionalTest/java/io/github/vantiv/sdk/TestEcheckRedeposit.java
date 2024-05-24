@@ -39,6 +39,7 @@ public class TestEcheckRedeposit {
 		echeck.setAccNum("12345657890");
 		echeck.setRoutingNum("123456789");
 		echeck.setCheckNum("123455");
+		echeck.setAccountId("123");
 	    echeckredeposit.setId("id");
 		
 		echeckredeposit.setEcheck(echeck);

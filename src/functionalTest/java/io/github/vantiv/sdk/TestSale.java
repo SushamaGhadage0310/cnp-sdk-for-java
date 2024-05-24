@@ -409,7 +409,7 @@ public class TestSale {
 		enhanced.setDiscountPercent(BigInteger.valueOf(12));
 		enhanced.setFulfilmentMethodType(FulfilmentMethodTypeEnum.COUNTER_PICKUP);
 		sale.setEnhancedData(enhanced);
-		sale.setBusinessIndicator(BusinessIndicatorEnum.HIGH_RISK_SECURITIES_PURCHASE);
+		sale.setBusinessIndicator(BusinessIndicatorEnum.PAYMENT_OF_OWN_CREDIT_CARD_BILL);
 		sale.setOrderChannel(OrderChannelEnum.IN_STORE_KIOSK);
 		sale.setFraudCheckStatus("CLOSE");
 		sale.setCrypto(true);
@@ -831,6 +831,33 @@ public class TestSale {
 		sale.setCrypto(true);
 		SaleResponse response = cnp.sale(sale);
 		assertEquals(response.getMessage(), "Approved", response.getMessage());
+		assertEquals("sandbox", response.getLocation());
+	}
+
+	@Test
+	public void sTestSimpleSalewith12_37() throws Exception{
+		Sale sale = new Sale();
+		sale.setAmount(106L);
+		sale.setCnpTxnId(123456L);
+		sale.setOrderId("12344");
+		sale.setSecondaryAmount(20L);
+		sale.setOrderSource(OrderSourceType.ECOMMERCE);
+		CardType card = new CardType();
+		card.setType(MethodOfPaymentTypeEnum.VI);
+		card.setNumber("4100000000000000");
+		card.setExpDate("1210");
+		sale.setCard(card);
+		sale.setId("id");
+		AccountFundingTransactionData accountFundingTransactionData= new AccountFundingTransactionData();
+		accountFundingTransactionData.setReceiverAccountNumber("12345");
+		accountFundingTransactionData.setReceiverCountry(CountryTypeEnum.AD);
+		accountFundingTransactionData.setReceiverFirstName("abc");
+		accountFundingTransactionData.setReceiverState(StateTypeEnum.AK);
+		accountFundingTransactionData.setReceiverLastName("def");
+		sale.setAccountFundingTransactionData(accountFundingTransactionData);
+		sale.setForeignRetailerIndicator(ForeignRetailerIndicatorEnum.F);
+		SaleResponse response = cnp.sale(sale);
+		assertEquals("Approved", response.getMessage());
 		assertEquals("sandbox", response.getLocation());
 	}
 

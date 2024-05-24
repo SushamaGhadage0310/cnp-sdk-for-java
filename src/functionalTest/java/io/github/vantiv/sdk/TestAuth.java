@@ -1048,4 +1048,60 @@ public class TestAuth {
 		assertEquals("sandbox", response.getLocation());
 	}
 
+	@Test
+	public void simpleAuthWithBusinessIndcatorFor12_37() throws Exception {
+		Authorization authorization = new Authorization();
+		authorization.setReportGroup("Planets");
+		authorization.setOrderId("12344");
+		authorization.setAmount(106L);
+		authorization.setOrderSource(OrderSourceType.ECOMMERCE);
+		authorization.setId("id");
+		CardType card = new CardType();
+		card.setType(MethodOfPaymentTypeEnum.VI);
+		card.setNumber("4100000000000000");
+		card.setExpDate("1210");
+		authorization.setCard(card);
+		EnhancedData enhanced = new EnhancedData();
+		enhanced.setCustomerReference("Cust Ref");
+		enhanced.setSalesTax(1000L);
+		LineItemData lid = new LineItemData();
+		lid.setItemSequenceNumber(1);
+		lid.setItemDescription("Electronics");
+		lid.setProductCode("El01");
+		lid.setItemCategory("Ele Appiances");
+		lid.setItemSubCategory("home appliaces");
+		lid.setProductId("1001");
+		lid.setProductName("dryer");
+		Subscription sub = new Subscription();
+		sub.setSubscriptionId("123");
+		sub.setCurrentPeriod(BigInteger.valueOf(1));
+		sub.setPeriodUnit("YEAR");
+		sub.setNumberOfPeriods(BigInteger.valueOf(2));
+		sub.setCurrentPeriod(BigInteger.valueOf(3));
+		sub.setNextDeliveryDate(Calendar.getInstance());
+		lid.setShipmentId("456");
+		lid.setSubscription(sub);
+		enhanced.getLineItemDatas().add(lid);
+		enhanced.setDiscountCode("oneTimeDis");
+		enhanced.setDiscountPercent(BigInteger.valueOf(12));
+		enhanced.setFulfilmentMethodType(FulfilmentMethodTypeEnum.STANDARD_SHIPPING);
+		authorization.setEnhancedData(enhanced);
+		authorization.setOrderChannel(OrderChannelEnum.SMART_TV);
+		authorization.setBusinessIndicator(BusinessIndicatorEnum.RAPID_MERCHANT_SETTLEMENT);
+		AccountFundingTransactionData accountFundingTransactionData= new AccountFundingTransactionData();
+		accountFundingTransactionData.setReceiverAccountNumber("12345");
+		accountFundingTransactionData.setReceiverCountry(CountryTypeEnum.AD);
+		accountFundingTransactionData.setReceiverFirstName("abc");
+		accountFundingTransactionData.setReceiverState(StateTypeEnum.AK);
+		accountFundingTransactionData.setReceiverLastName("def");
+		accountFundingTransactionData.setReceiverAccountNumberType(AccountFundingTransactionAccountNumberTypeEnum.BAN_AND_BIC);
+		accountFundingTransactionData.setAccountFundingTransactionType(AccountFundingTransactionTypeEnum.ACCOUNT_TO_ACCOUNT);
+		authorization.setAccountFundingTransactionData(accountFundingTransactionData);
+		authorization.setFraudCheckAction(FraudCheckActionEnum.DECLINED_NEED_FRAUD_CHECK);
+		AuthorizationResponse response = cnp.authorize(authorization);
+		assertEquals(response.getMessage(), "000",response.getResponse());
+		assertEquals("Approved", response.getMessage());
+		assertEquals("sandbox", response.getLocation());
+	}
+
 }

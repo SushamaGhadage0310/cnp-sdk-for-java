@@ -891,6 +891,93 @@ public class CnpOnline {
         return (FinicityUrlResponse)newresponse.getValue();
     }
 
+    public  FinicityAccountResponse finicityAccount(FinicityAccountRequest finicityAccount) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return finicityAccount(finicityAccount, request);
+    }
+
+    public FinicityAccountResponse finicityAccount(FinicityAccountRequest finicityAccount, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(finicityAccount);
+        request.setTransaction(CnpContext.getObjectFactory().createFinicityAccountRequest(finicityAccount));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (FinicityAccountResponse) newresponse.getValue();
+    }
+
+    public  BNPLAuthResponse bnplAuth(BNPLAuthorizationRequest bnplAuth) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return bnplAuth(bnplAuth, request);
+    }
+
+    public BNPLAuthResponse bnplAuth(BNPLAuthorizationRequest bnplAuth, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(bnplAuth);
+
+        request.setTransaction(CnpContext.getObjectFactory().createBNPLAuthorizationRequest(bnplAuth));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (BNPLAuthResponse) newresponse.getValue();
+    }
+    public BNPLCaptureResponse bnplCapture(BNPLCaptureRequest bnplCapture) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return bnplCapture(bnplCapture, request);
+    }
+
+    public BNPLCaptureResponse bnplCapture(BNPLCaptureRequest bnplCapture, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(bnplCapture);
+
+        request.setTransaction(CnpContext.getObjectFactory().createBNPLCaptureRequest(bnplCapture));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (BNPLCaptureResponse) newresponse.getValue();
+    }
+
+    public BNPLRefundResponse bnplRefund(BNPLRefundRequest bnplRefund) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return bnplRefund(bnplRefund, request);
+    }
+
+    public BNPLRefundResponse bnplRefund(BNPLRefundRequest bnplRefund, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(bnplRefund);
+
+        request.setTransaction(CnpContext.getObjectFactory().createBNPLRefundRequest(bnplRefund));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (BNPLRefundResponse)newresponse.getValue();
+    }
+
+    public BNPLCancelResponse bnplCancle(BNPLCancelRequest bnplCancle) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return bnplCancle(bnplCancle, request);
+    }
+
+    public BNPLCancelResponse bnplCancle(BNPLCancelRequest bnplCancle, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(bnplCancle);
+
+        request.setTransaction(CnpContext.getObjectFactory().createBNPLCancelRequest(bnplCancle));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (BNPLCancelResponse) newresponse.getValue();
+    }
+
+    public BNPLInquiryResponse bnplInquiry(BNPLInquiryRequest bnplInquiry) throws CnpOnlineException {
+        CnpOnlineRequest request = createCnpOnlineRequest();
+        return bnplInquiry(bnplInquiry, request);
+    }
+
+    public BNPLInquiryResponse bnplInquiry(BNPLInquiryRequest bnplInquiry, CnpOnlineRequest overrides) throws CnpOnlineException {
+        CnpOnlineRequest request = fillInMissingFieldsFromConfig(overrides);
+        fillInReportGroup(bnplInquiry);
+
+        request.setTransaction(CnpContext.getObjectFactory().createBNPLInquiryRequest(bnplInquiry));
+        CnpOnlineResponse response = sendToCnp(request);
+        JAXBElement<? extends TransactionTypeWithReportGroup> newresponse = response.getTransactionResponse();
+        return (BNPLInquiryResponse)newresponse.getValue();
+    }
 	private CnpOnlineRequest createCnpOnlineRequest() {
 		CnpOnlineRequest request = new CnpOnlineRequest();
 		request.setMerchantId(config.getProperty("merchantId"));

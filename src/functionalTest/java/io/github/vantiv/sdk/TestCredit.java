@@ -7,8 +7,10 @@ import static org.junit.Assert.fail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.github.vantiv.sdk.generate.AccountFundingTransactionData;
 import io.github.vantiv.sdk.generate.BusinessIndicatorEnum;
 import io.github.vantiv.sdk.generate.CardType;
+import io.github.vantiv.sdk.generate.CountryTypeEnum;
 import io.github.vantiv.sdk.generate.Credit;
 import io.github.vantiv.sdk.generate.CreditResponse;
 import io.github.vantiv.sdk.generate.EnhancedData;
@@ -17,6 +19,7 @@ import io.github.vantiv.sdk.generate.MethodOfPaymentTypeEnum;
 import io.github.vantiv.sdk.generate.OrderSourceType;
 import io.github.vantiv.sdk.generate.ProcessingInstructions;
 import io.github.vantiv.sdk.generate.PassengerTransportData;
+import io.github.vantiv.sdk.generate.StateTypeEnum;
 import io.github.vantiv.sdk.generate.Subscription;
 import io.github.vantiv.sdk.generate.TripLegData;
 import io.github.vantiv.sdk.generate.ComputerizedReservationSystemEnum;
@@ -322,6 +325,31 @@ public class TestCredit {
         lid.setSubscription(sub);
         enhanced.getLineItemDatas().add(lid);
         credit.setEnhancedData(enhanced);
+        CreditResponse response = cnp.credit(credit);
+        assertEquals("Approved", response.getMessage());
+        assertEquals("sandbox", response.getLocation());
+    }
+
+    @Test
+    public void simpleCreditWithBusinessIndicatorFor12_37() throws Exception {
+        Credit credit = new Credit();
+        credit.setAmount(106L);
+        credit.setOrderId("12344");
+        credit.setOrderSource(OrderSourceType.ECOMMERCE);
+        CardType card = new CardType();
+        card.setType(MethodOfPaymentTypeEnum.VI);
+        card.setNumber("4100000000000001");
+        card.setExpDate("1210");
+        credit.setCard(card);
+        credit.setId("id");
+        credit.setBusinessIndicator(BusinessIndicatorEnum.PAYMENT_OF_OWN_CREDIT_CARD_BILL);
+        AccountFundingTransactionData accountFundingTransactionData= new AccountFundingTransactionData();
+        accountFundingTransactionData.setReceiverAccountNumber("12345");
+        accountFundingTransactionData.setReceiverCountry(CountryTypeEnum.AD);
+        accountFundingTransactionData.setReceiverFirstName("abc");
+        accountFundingTransactionData.setReceiverState(StateTypeEnum.AK);
+        accountFundingTransactionData.setReceiverLastName("def");
+        credit.setAccountFundingTransactionData(accountFundingTransactionData);
         CreditResponse response = cnp.credit(credit);
         assertEquals("Approved", response.getMessage());
         assertEquals("sandbox", response.getLocation());
