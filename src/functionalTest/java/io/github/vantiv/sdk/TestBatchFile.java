@@ -465,8 +465,8 @@ public class TestBatchFile {
         passengerTransportData.setCreditReasonIndicator(CreditReasonIndicatorEnum.C);
         passengerTransportData.setTicketChangeIndicator(TicketChangeIndicatorEnum.C);
         passengerTransportData.setTicketIssuerAddress("IssuerAddress");
-        passengerTransportData.setExchangeAmount(new Long(110));
-        passengerTransportData.setExchangeFeeAmount(new Long(112));
+        passengerTransportData.setExchangeAmount(110l);
+        passengerTransportData.setExchangeFeeAmount(112l);
         passengerTransportData.setExchangeTicketNumber("ExchangeNumber");
         passengerTransportData.getTripLegDatas().add(addTripLegData());
         return  passengerTransportData;
@@ -988,9 +988,9 @@ public class TestBatchFile {
 
         // echeck
         EcheckType echeck = new EcheckType();
-        echeck.setAccNum("1092969901");
+        echeck.setAccNum("1234567890");
         echeck.setAccType(EcheckAccountTypeEnum.CHECKING);
-        echeck.setRoutingNum("211370545");
+        echeck.setRoutingNum("123456789");
         echeck.setCheckNum("123455");
         echeck.setEcheckCustomerId("154646587");
 
@@ -1022,8 +1022,8 @@ public class TestBatchFile {
 
         EcheckTypeCtx echeck1 = new EcheckTypeCtx();
         echeck1.setAccType(EcheckAccountTypeEnum.CHECKING);
-        echeck1.setAccNum("123456789012");
-        echeck1.setRoutingNum("211370545");
+        echeck1.setAccNum("1234567890");
+        echeck1.setRoutingNum("123456789");
         echeck1.setCcdPaymentInformation("paymentInfo");
         vcredit.setAccountInfo(echeck1);
 
@@ -1048,8 +1048,8 @@ public class TestBatchFile {
 
         EcheckTypeCtx echeck2 = new EcheckTypeCtx();
         echeck2.setAccType(EcheckAccountTypeEnum.CHECKING);
-        echeck2.setAccNum("123456789012");
-        echeck2.setRoutingNum("211370545");
+        echeck2.setAccNum("1234567890");
+        echeck2.setRoutingNum("123456789");
         echeck2.setCcdPaymentInformation("paymentInfo");
         submerchantdebit.setAccountInfo(echeck2);
         submerchantdebit.setCustomIdentifier("SCFFISC");
@@ -1072,7 +1072,98 @@ public class TestBatchFile {
         assertEquals(transactionCount, processor.responseCount);
     }
 
+    @Test
+    public void testBatchWithV12_37() {
+        Assume.assumeFalse(preliveStatus.equalsIgnoreCase("down"));
+        String requestFileName = "cnpSdk-testBatchFile-MECHA-" + TIME_STAMP + ".xml";
+        CnpBatchFileRequest request = new CnpBatchFileRequest(requestFileName);
+        Properties configFromFile = request.getConfig();
 
+        // pre-assert the config file has required param values
+        assertEquals("payments.vantivprelive.com", configFromFile.getProperty("batchHost"));
+
+        //assertEquals("15000", configFromFile.getProperty("batchPort"));
+
+        CnpBatchRequest batch = request.createBatch(configFromFile.getProperty("merchantId"));
+
+        Authorization authorization = new Authorization();
+        authorization.setReportGroup("Planets");
+        authorization.setOrderId("12344");
+        authorization.setAmount(106L);
+        authorization.setOrderSource(OrderSourceType.ECOMMERCE);
+        authorization.setId("id");
+        CardType card = new CardType();
+        card.setType(MethodOfPaymentTypeEnum.VI);
+        card.setNumber("4100000000000000");
+        card.setExpDate("1210");
+        authorization.setCard(card);
+        EnhancedData enhanced = new EnhancedData();
+        enhanced.setCustomerReference("Cust Ref");
+        enhanced.setSalesTax(1000L);
+        LineItemData lid = new LineItemData();
+        lid.setItemSequenceNumber(1);
+        lid.setItemDescription("Electronics");
+        lid.setProductCode("El01");
+        lid.setItemCategory("Ele Appiances");
+        lid.setItemSubCategory("home appliaces");
+        lid.setProductId("1001");
+        lid.setProductName("dryer");
+        Subscription sub = new Subscription();
+        sub.setSubscriptionId("123");
+        sub.setCurrentPeriod(BigInteger.valueOf(1));
+        sub.setPeriodUnit("YEAR");
+        sub.setNumberOfPeriods(BigInteger.valueOf(2));
+        sub.setCurrentPeriod(BigInteger.valueOf(3));
+        sub.setNextDeliveryDate(Calendar.getInstance());
+        lid.setShipmentId("456");
+        lid.setSubscription(sub);
+        enhanced.getLineItemDatas().add(lid);
+        enhanced.setDiscountCode("oneTimeDis");
+        enhanced.setDiscountPercent(BigInteger.valueOf(12));
+        enhanced.setFulfilmentMethodType(FulfilmentMethodTypeEnum.STANDARD_SHIPPING);
+        authorization.setEnhancedData(enhanced);
+        authorization.setOrderChannel(OrderChannelEnum.SMART_TV);
+        authorization.setBusinessIndicator(BusinessIndicatorEnum.RAPID_MERCHANT_SETTLEMENT);
+        AccountFundingTransactionData accountFundingTransactionData= new AccountFundingTransactionData();
+        accountFundingTransactionData.setReceiverAccountNumber("12345");
+        accountFundingTransactionData.setReceiverCountry(CountryTypeEnum.AD);
+        accountFundingTransactionData.setReceiverFirstName("abc");
+        accountFundingTransactionData.setReceiverState(StateTypeEnum.AK);
+        accountFundingTransactionData.setReceiverLastName("def");
+        accountFundingTransactionData.setReceiverAccountNumberType(AccountFundingTransactionAccountNumberTypeEnum.BAN_AND_BIC);
+        accountFundingTransactionData.setAccountFundingTransactionType(AccountFundingTransactionTypeEnum.ACCOUNT_TO_ACCOUNT);
+        authorization.setAccountFundingTransactionData(accountFundingTransactionData);
+        authorization.setFraudCheckAction(FraudCheckActionEnum.DECLINED_NEED_FRAUD_CHECK);
+        batch.addTransaction(authorization);
+
+        EcheckRedeposit echeckRedeposit = new EcheckRedeposit();
+        echeckRedeposit.setReportGroup("Planets");
+        echeckRedeposit.setCnpTxnId(124321341412L);
+        echeckRedeposit.setId("id");
+        EcheckType echeckType = new EcheckType();
+        echeckType.setAccountId("123455");
+        echeckType.setAccNum("1234567890");
+        echeckType.setRoutingNum("123456789");
+        echeckType.setAccType(EcheckAccountTypeEnum.CHECKING);
+        echeckRedeposit.setEcheck(echeckType);
+        batch.addTransaction(echeckRedeposit);
+
+        int transactionCount = batch.getNumberOfTransactions();
+
+        CnpBatchFileResponse fileResponse = request.sendToCnpSFTP();
+        CnpBatchResponse batchResponse = fileResponse
+                .getNextCnpBatchResponse();
+        int txns = 0;
+
+        ResponseValidatorProcessor processor = new ResponseValidatorProcessor();
+
+        while (batchResponse.processNextTransaction(processor)) {
+            txns++;
+        }
+
+        assertEquals(transactionCount, txns);
+        assertEquals(transactionCount, processor.responseCount);
+    }
     private SellerInfo addSellerInfo(){
         SellerInfo sellerInfo=new SellerInfo();
         sellerInfo.setAccountNumber("4485581000000005");
@@ -1141,21 +1232,21 @@ public class TestBatchFile {
 
         // echeck success
         EcheckType echeckSuccess = new EcheckType();
-        echeckSuccess.setAccNum("1092969901");
+        echeckSuccess.setAccNum("1234567890");
         echeckSuccess.setAccType(EcheckAccountTypeEnum.CORPORATE);
-        echeckSuccess.setRoutingNum("011075150");
+        echeckSuccess.setRoutingNum("123456789");
         echeckSuccess.setCheckNum("123455");
 
         EcheckType echeckAccErr = new EcheckType();
-        echeckAccErr.setAccNum("102969901");
+        echeckAccErr.setAccNum("1234567890");
         echeckAccErr.setAccType(EcheckAccountTypeEnum.CORPORATE);
-        echeckAccErr.setRoutingNum("011100012");
+        echeckAccErr.setRoutingNum("123456789");
         echeckAccErr.setCheckNum("123455");
 
         EcheckType echeckRoutErr = new EcheckType();
-        echeckRoutErr.setAccNum("6099999992");
+        echeckRoutErr.setAccNum("1234567890");
         echeckRoutErr.setAccType(EcheckAccountTypeEnum.CHECKING);
-        echeckRoutErr.setRoutingNum("053133052");
+        echeckRoutErr.setRoutingNum("123456789");
         echeckRoutErr.setCheckNum("123455");
 
         // billto address
