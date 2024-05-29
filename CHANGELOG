@@ -1,6 +1,6 @@
 = Vantiv eCommerce CNP CHANGELOG
 
-==Version 12.37.0 (v12.37.0)(May 28, 2024)
+==Version 12.37.0 (v12.37.0)(May 29, 2024)
 * Change: [cnpAPI v12.37] New existing 'postCheckoutRedirectUrl' with min length '1' and maxlength '200'
 * Change: [cnpAPI v12.37] New enum 'provider' is added with value 'AFFIRM'
 * Change: [cnpAPI v12.37] New complex type 'inquiryResultType' is added with  simple element 'response' of 'responseType' and 'message' of 'messageType'.
@@ -14,21 +14,21 @@
 * Change: [cnpAPI v12.37] New complex element 'BNPLCancelResponse' is added with existing simple element 'cnpTxnId','response','responseTime','message','location'
 * Change: [cnpAPI v12.37] New complex element 'BNPLInquiryRequest' is added with existing simple element 'orderId','cnpTxnId'
 * Change: [cnpAPI v12.37] New complex element 'BNPLInquiryResponse' is added with existing simple element 'cnpTxnId','response','responseTime','message','location' and complex element 'inquiryResult' of 'inquiryResultType'
-* Change: [cnpAPI v12.37] new Enum is added 'accountFundingTransactionTypeEnum' with new values 'accountToAccount','agentCashOut','bankInitiated','businessDisbursement','businessToBusinessTransfer','debitPrepaidAccount','fundsDisbursement','fundTransfer','governmentNonProfitDisbursement','paymentOfOwnCreditCardBill','payrollDisbursement','personToPerson','personToPersonCardAccount','rapidMerchantSettlement','topUp','walletTransfer'
-* Change: [cnpAPI v12.37] new Enum is added 'accountFundingTransactionAccountNumberTypeEnum' with new values 'other','RTNAndBAN','IBAN','cardAccount','email','phoneNumber','BANAndBIC','walletID','socialNetworkID'
-* Change: [cnpAPI v12.37] New complex 'finicityAccountRequest' element is added with simple element 'echeckCustomerId' of type 'string25Type'
-* Change: [cnpAPI v12.37] New complex 'finicityAccountResponse' element is added with simple elements 'cnpTxnId','response','responseTime','message','location' and new complex element 'finicityAccount' of type 'finicityAccountInfoType'
-* Change: [cnpAPI v12.37] To support 'finicityAccount' new complex type 'finicityAccountInfoType' is added with simple element accountId' of 'string','accType' of type 'echeckAccountTypeEnum','realAccNum' of 'echeckAccountNumberType','routingNum' of 'routingNumberType'
-* Change: [cnpAPI v12.37] new element 'fraudCheckAction' of 'fraudCheckActionEnum' is added in Authorization, sale request.
-* Change: [cnpAPI v12.37] New values added 'APPROVED_SKIP_FRAUD_CHECK','DECLINED_NEED_FRAUD_CHECK' to existing 'fraudCheckActionEnum'
-* Change: [cnpAPI v12.37] New simple element 'accountId' of type 'string' is added in 'echeckType' existing complex type.
-* Change: [cnpAPI v12.37] new simple elements are added in existing complex element accountFundingTransactionData,'receiverAccountNumberType' of 'accountFundingTransactionAccountNumberTypeEnum' and 'accountFundingTransactionType' of 'accountFundingTransactionTypeEnum'
-* Change: [cnpAPI v12.37] In existing Enum businessIndicatorEnum new values 'personToPersonCardAccount','debitPrepaidAccount','paymentOfOwnCreditCardBill','businessDisbursement','businessToBusinessTransfer','governmentNonProfitDisbursement','rapidMerchantSettlement','agentCashOut' are added.
-* Change: [cnpAPI v12.37] New Enum 'stateTypeEnum' is added with values 'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','AB','BC','MB','NB','NL','NT','NS','ON','PE','QC','SK','YT','NU'
-* Change: [cnpAPI v12.37] In existing Enum fulfilmentMethodTypeEnum new values 'STANDARD_SHIPPING' and 'EXPEDITED_SHIPPING'
-* Change: [cnpAPI v12.37] In existing Enum orderChannelEnum new values 'SCAN_AND_GO' and 'SMART_TV'
-* Change: [cnpAPI v12.37] New complex element 'accountFundingTransactionData' added with below simple elements receiverFirstName of 'string35Type' ,'receiverLastName' of 'string35Type','receiverState' of 'stateTypeEnum',''receiverCountry' of 'countryTypeEnum' and 'receiverAccountNumber' of 'string50Type'
-* Change: [cnpAPI v12.37] 'accountFundingTransactionData' is added in Authorization,sale,credit,capturegiventAuth and FORCECapture request.
+* Change: [cnpAPI v12.36] new Enum is added 'accountFundingTransactionTypeEnum' with new values 'accountToAccount','agentCashOut','bankInitiated','businessDisbursement','businessToBusinessTransfer','debitPrepaidAccount','fundsDisbursement','fundTransfer','governmentNonProfitDisbursement','paymentOfOwnCreditCardBill','payrollDisbursement','personToPerson','personToPersonCardAccount','rapidMerchantSettlement','topUp','walletTransfer'
+* Change: [cnpAPI v12.36] new Enum is added 'accountFundingTransactionAccountNumberTypeEnum' with new values 'other','RTNAndBAN','IBAN','cardAccount','email','phoneNumber','BANAndBIC','walletID','socialNetworkID'
+* Change: [cnpAPI v12.36] New complex 'finicityAccountRequest' element is added with simple element 'echeckCustomerId' of type 'string25Type'
+* Change: [cnpAPI v12.36] New complex 'finicityAccountResponse' element is added with simple elements 'cnpTxnId','response','responseTime','message','location' and new complex element 'finicityAccount' of type 'finicityAccountInfoType'
+* Change: [cnpAPI v12.36] To support 'finicityAccount' new complex type 'finicityAccountInfoType' is added with simple element accountId' of 'string','accType' of type 'echeckAccountTypeEnum','realAccNum' of 'echeckAccountNumberType','routingNum' of 'routingNumberType'
+* Change: [cnpAPI v12.36] new element 'fraudCheckAction' of 'fraudCheckActionEnum' is added in Authorization, sale request.
+* Change: [cnpAPI v12.36] New values added 'APPROVED_SKIP_FRAUD_CHECK','DECLINED_NEED_FRAUD_CHECK' to existing 'fraudCheckActionEnum'
+* Change: [cnpAPI v12.36] New simple element 'accountId' of type 'string' is added in 'echeckType' existing complex type.
+* Change: [cnpAPI v12.36] new simple elements are added in existing complex element accountFundingTransactionData,'receiverAccountNumberType' of 'accountFundingTransactionAccountNumberTypeEnum' and 'accountFundingTransactionType' of 'accountFundingTransactionTypeEnum'
+* Change: [cnpAPI v12.35] In existing Enum businessIndicatorEnum new values 'personToPersonCardAccount','debitPrepaidAccount','paymentOfOwnCreditCardBill','businessDisbursement','businessToBusinessTransfer','governmentNonProfitDisbursement','rapidMerchantSettlement','agentCashOut' are added.
+* Change: [cnpAPI v12.35] New Enum 'stateTypeEnum' is added with values 'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','AB','BC','MB','NB','NL','NT','NS','ON','PE','QC','SK','YT','NU'
+* Change: [cnpAPI v12.35] In existing Enum fulfilmentMethodTypeEnum new values 'STANDARD_SHIPPING' and 'EXPEDITED_SHIPPING'
+* Change: [cnpAPI v12.35] In existing Enum orderChannelEnum new values 'SCAN_AND_GO' and 'SMART_TV'
+* Change: [cnpAPI v12.35] New complex element 'accountFundingTransactionData' added with below simple elements receiverFirstName of 'string35Type' ,'receiverLastName' of 'string35Type','receiverState' of 'stateTypeEnum',''receiverCountry' of 'countryTypeEnum' and 'receiverAccountNumber' of 'string50Type'
+* Change: [cnpAPI v12.35] 'accountFundingTransactionData' is added in Authorization,sale,credit,capturegiventAuth and FORCECapture request.
 
 ==Version 12.34.1 (v12.34.1)(May 6, 2024)
 * Change: cnp-sdk-for-java is upgraded to work with Java 17.
