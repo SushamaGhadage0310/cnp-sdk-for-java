@@ -144,6 +144,58 @@ public class SampleCnpTxn {
 	}
 }
 ```
+Setting Up OLTP Encryption Functionality
+-----------------------------------------
+To enable OLTP encryption functionality, follow these steps:
+
+1. Add the following properties to your configuration file (.cnp_SDK_config.properties):
+
+    1. oltpEncryptionPayload (true/false)
+    2. oltpEncryptionKeySequence (this is received in the response of encryptionKeyRequest)
+    3. oltpEncryptionKeyPath (path where key is stored)
+
+2. Obtain Encryption Key:
+    
+    Send an encryptionKeyRequest to obtain the encryption key and key sequence.
+
+3. Key Setup:
+
+    Save the encryptionkey in one file.
+    Ensure the key setup is done with the values obtained key sequence and path of the encryptionkey file.
+
+4. Processing OLTP Transactions:
+
+     Run any OLTP transaction. The transaction will be processed based on the value of oltpEncryptionPayload.
+     If oltpEncryptionPayload is set to true, the transaction payload will be converted to an encrypted payload, and a normal cnpOnlineRequest will be formed.
+     The request will be processed to give a plain text/normal response.
+     
+ By following these steps, you can enable and configure OLTP encryption functionality in the cnp-sdk-for-java project.
+
+5. Below are samples for transactions.
+
+Example for encryptionKeyRequest:
+
+```java
+    import com.cnp.sdk.*;
+    import com.cnp.sdk.generate.*;
+    public class SampleEncryptionKeyRequest {
+
+	public static void main(String[] args) {
+
+        EncryptionKeyRequest request = new EncryptionKeyRequest();
+        request.setEncryptionKeyRequest(EncryptionKeyRequestEnum.CURRENT);
+		
+        // Peform the transaction on the Vantiv eCommerce Platform
+        EncryptionKeyResponse response = cnp.encryptionKeyRequest(request.getEncryptionKeyRequest());
+        
+        // display result
+        System.out.println("Key Sequence: " + response.getEncryptionKeySequence());
+        System.out.println("Encryption Key : " + response.getEncryptionKey());
+	}
+    }
+```
+
+There is one example shown in Note section can be used to validate transaction processing  after doing all setup . 
 
 More examples can be found here [Java Gists](https://gist.github.com/VantivSDK)
 
