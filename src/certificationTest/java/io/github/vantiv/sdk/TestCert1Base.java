@@ -1029,7 +1029,7 @@ public class TestCert1Base {
 		AuthorizationResponse response = cnp.authorize(authorization);
 		assertEquals(response.getMessage(), "010",response.getResponse());
 		assertEquals(response.getMessage(), "Partially Approved",response.getMessage());
-		assertEquals(response.getMessage(), 32000L,response.getApprovedAmount().longValue());
+		assertEquals(response.getMessage(), 32000L, response.getApprovedAmount().longValue());
 	}
 
 	@Test
@@ -1050,7 +1050,7 @@ public class TestCert1Base {
 		AuthorizationResponse response = cnp.authorize(authorization);
 		assertEquals(response.getMessage(), "010",response.getResponse());
 		assertEquals(response.getMessage(), "Partially Approved",response.getMessage());
-		assertEquals(response.getMessage(), 48000L,response.getApprovedAmount().longValue());
+		assertEquals(response.getMessage(), 48000L, response.getApprovedAmount().longValue());
 	}
 
 	@Test
@@ -1071,7 +1071,7 @@ public class TestCert1Base {
 		AuthorizationResponse response = cnp.authorize(authorization);
 		assertEquals(response.getMessage(), "010",response.getResponse());
 		assertEquals(response.getMessage(), "Partially Approved",response.getMessage());
-		assertEquals(response.getMessage(), 40000L,response.getApprovedAmount().longValue());
+		assertEquals(response.getMessage(), 40000L, response.getApprovedAmount().longValue());
 	}
 
 	@Test
@@ -1092,7 +1092,7 @@ public class TestCert1Base {
 		AuthorizationResponse response = cnp.authorize(authorization);
 		assertEquals(response.getMessage(), "010",response.getResponse());
 		assertEquals(response.getMessage(), "Partially Approved",response.getMessage());
-		assertEquals(response.getMessage(), 12000L,response.getApprovedAmount().longValue());
+		assertEquals(response.getMessage(), 12000L, response.getApprovedAmount().longValue());
 	}
 
 	//TODO: incorrect responses for p1 sale

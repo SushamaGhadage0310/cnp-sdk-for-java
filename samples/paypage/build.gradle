@@ -1,16 +1,17 @@
 apply plugin : 'java'
 apply plugin : 'eclipse'
 repositories {
-    maven  {
-        url "http://repo1.maven.org/maven2"
+    maven {
+        url "http://nufl2vpnexus02.nonprod.nb01.local:8081/repository/central/"
+        allowInsecureProtocol = true
     }
 }
-   dependencies{
+dependencies{
        implementation rootProject
  }
   task execPaypageRegistrationIdToTokenExample (type:JavaExec){
 	check.dependsOn it
-        main='io.github.vantiv.sdk.samples.PaypageRegistrationIdToTokenExample'
+        mainClass.set('io.github.vantiv.sdk.samples.PaypageRegistrationIdToTokenExample')
         classpath = sourceSets.main.runtimeClasspath	   
 }
 

@@ -127,12 +127,16 @@ public class PgpHelper {
             encryptedDataList = (PGPEncryptedDataList) jcaPGPObjectFactory.nextObject();
         }
 
-        Iterator<PGPPublicKeyEncryptedData> pgpPublicKeyEncryptedDataIterator = (Iterator) encryptedDataList.getEncryptedDataObjects();
+        Iterator<?> pgpPublicKeyEncryptedDataIterator = encryptedDataList.getEncryptedDataObjects();
         PGPPrivateKey pgpPrivateKey = null;
         PGPPublicKeyEncryptedData pgpPublicKeyEncryptedData = null;
 
         while (pgpPrivateKey == null && pgpPublicKeyEncryptedDataIterator.hasNext()) {
-            pgpPublicKeyEncryptedData = pgpPublicKeyEncryptedDataIterator.next();
+            Object encryptedDataObject = pgpPublicKeyEncryptedDataIterator.next();
+            if (!(encryptedDataObject instanceof PGPPublicKeyEncryptedData)) {
+                continue;
+            }
+            pgpPublicKeyEncryptedData = (PGPPublicKeyEncryptedData) encryptedDataObject;
             pgpPrivateKey = findSecretKey(new FileInputStream(privateKeyPath), pgpPublicKeyEncryptedData.getKeyID(), pp.toCharArray());
         }
 
@@ -233,8 +237,9 @@ public class PgpHelper {
     }
     public static String encryptString(String plainText, String publicKeyPath)  throws IOException, PGPException {
         ByteArrayOutputStream encOut = new ByteArrayOutputStream();
-        ArmoredOutputStream armoredOut = new ArmoredOutputStream(encOut);
-        armoredOut.setHeader("Version", "BCPG v1.78");
+        ArmoredOutputStream armoredOut = ArmoredOutputStream.builder()
+                .setVersion("BCPG v1.78")
+                .build(encOut);
         PGPPublicKey pgpPublicKey = readPublicKey(new FileInputStream(publicKeyPath));
         Security.addProvider(new BouncyCastleProvider());
 

@@ -472,7 +472,7 @@ public class TestCert2AuthEnhanced {
 		AuthorizationResponse response = cnp.authorize(authorization);
 		assertEquals(response.getMessage(), "010",response.getResponse());
 		assertEquals(response.getMessage(), "Partially Approved",response.getMessage());
-		assertEquals(response.getMessage(), 18699L,response.getApprovedAmount().longValue());
+		assertEquals(response.getMessage(), 18699L,response.getApprovedAmount().Long.value());
 	}
 	*/
 }

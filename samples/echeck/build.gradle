@@ -1,32 +1,33 @@
 apply plugin : 'java'
 apply plugin : 'eclipse'
 repositories {
-    maven  {
-        url "http://repo1.maven.org/maven2"
+    maven {
+        url "http://nufl2vpnexus02.nonprod.nb01.local:8081/repository/central/"
+        allowInsecureProtocol = true
     }
 }
-   dependencies{
+dependencies{
        implementation rootProject
  }
   task execEcheckCreditExample(type:JavaExec){
 	check.dependsOn it
-        main='io.github.vantiv.sdk.samples.EcheckCreditExample'
+        mainClass.set('io.github.vantiv.sdk.samples.EcheckCreditExample')
         classpath = sourceSets.main.runtimeClasspath	   
 }
   task execEcheckRedepositExample(type:JavaExec){
 	check.dependsOn it
-        main='io.github.vantiv.sdk.samples.EcheckRedepositExample'
+        mainClass.set('io.github.vantiv.sdk.samples.EcheckRedepositExample')
         classpath = sourceSets.main.runtimeClasspath	   
 }
   task execEcheckSaleExample(type:JavaExec){
 	check.dependsOn it
-        main='io.github.vantiv.sdk.samples.EcheckSaleExample'
+        mainClass.set('io.github.vantiv.sdk.samples.EcheckSaleExample')
         classpath = sourceSets.main.runtimeClasspath	   
 }
 
   task execEcheckVerificationExample(type:JavaExec){
 	check.dependsOn it
-        main='io.github.vantiv.sdk.samples.EcheckVerificationExample'
+        mainClass.set('io.github.vantiv.sdk.samples.EcheckVerificationExample')
         classpath = sourceSets.main.runtimeClasspath	   
 }
 
